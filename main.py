@@ -1,7 +1,7 @@
 import random
 """
 ideas & ways to improve:
-! Fix the Would you like to play another round? statement that is showing when the user is trying to run the program for the first time 
+! Fix the new_game  'Would you like to play another round?' statement that is showing when the user is trying to run the program for the first time.
 
 -display menu with the relevant options 
 -Add 2-player mode so that 2 people can play against each other
@@ -11,7 +11,7 @@ ideas & ways to improve:
 -add input validation
 """
 
-def get_user_choice():
+def get_user_choice(): #  get user choice
     keep_going = True
     while keep_going:
         try:
@@ -27,7 +27,10 @@ def get_user_choice():
             print("Input canceled by the user.")
 
 
-def choices_explained(choice):
+def get_computer_choice():  # generate random choice for computer_choice variable
+    return random.choice(["r", "p", "s", "l", "sp"])
+
+def choices_explained(choice): #  this function is used in the final output, to explain the meaning of the dictionary's keys
     if choice == "s":
         return "for scissors"
     elif choice == "p":
@@ -40,11 +43,7 @@ def choices_explained(choice):
         return "for spock"
 
 
-def get_computer_choice():
-    return random.choice(["r", "p", "s", "l", "sp"])
-
-
-def winner(user_choice, computer_choice):
+def winner(user_choice, computer_choice):  #  determine the winner
     if user_choice == computer_choice:
         return "It's a tie!"
 
@@ -70,7 +69,7 @@ def winner(user_choice, computer_choice):
         return f"Computer won! {outcomes[(computer_choice_str, user_choice_str)]}"
 
 
-def play_game():
+def play_game():  #  initiate a game
     user_choice = get_user_choice()
     computer_choice = get_computer_choice()
 
@@ -81,7 +80,7 @@ def play_game():
     print(result)
 
 
-new_game = input("Would you like to play another round? Type 'y' for Yes or 'n' for No.")
+new_game = input("Would you like to play another round? Type 'y' for Yes or 'n' for No.")  # ask the user if they would like to play another round
 if new_game == "y":
     play_game()
 else:
