@@ -1,5 +1,15 @@
 import random
+"""
+ideas & ways to improve:
+! Fix the Would you like to play another round? statement that is showing when the user is trying to run the program for the first time 
 
+-display menu with the relevant options 
+-Add 2-player mode so that 2 people can play against each other
+-get input at the beginning to define if they want to play against the computer or a friend
+-Get users to input their name and make the output more personalized
+-run continuously until user prompts to exit
+-add input validation
+"""
 
 def get_user_choice():
     keep_going = True
