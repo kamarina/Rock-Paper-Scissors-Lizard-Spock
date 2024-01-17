@@ -163,7 +163,7 @@ def play_game():
     while True:
         game_mode = input("Do you want to play Vs computer or another player? "
                           "\nType '1' to play against the computer, or '2' to play with a friend: ")
-        
+
         if game_mode in ("1", "2"):
             if game_mode == "1":
                 single_player()
