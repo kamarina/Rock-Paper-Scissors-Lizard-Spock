@@ -14,6 +14,8 @@ This is a Python implementation of the Rock-Paper-Scissors-Lizard-Spock game, a 
 * Lizard poisons Spock and eats paper.
 * Spock smashes scissors and vaporizes rock.
 
+(images/diagram.png)
+
 ## Additional Features
 The game explains your and the computer's choices.
 Option to play another round after the game ends.
