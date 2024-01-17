@@ -39,6 +39,7 @@ def user_choice(prompt):
             print("Interrupted!")
             break
 
+
 def computer_choice():
     print("Computer is choosing... ")
     for _ in range(2):
@@ -112,6 +113,7 @@ def single_player():
         # else:
         #     return # return to mode selection
 
+
 def two_players():
     player1_win = 0
     player2_win = 0
@@ -156,17 +158,20 @@ def two_players():
     #     else:
     #         return
 
+
 def play_game():
     while True:
         game_mode = input("Do you want to play Vs computer or another player? "
-                        "\nType '1' to play against the computer, or '2' to play with a friend: ")
-        if game_mode in("1", "2"):
+                          "\nType '1' to play against the computer, or '2' to play with a friend: ")
+        
+        if game_mode in ("1", "2"):
             if game_mode == "1":
                 single_player()
             elif game_mode == "2":
                 two_players()
         else:
             print("Invalid choice, please enter '1' or '2'.")
+
 
 game_menu()
 play_game()
