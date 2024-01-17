@@ -8,11 +8,8 @@ ideas & ways to improve:
 -add input validation
 
 #TODO: 
-👊 rock 
-✋ paper
-✌️ scissors
-🤏 lizard
-🖖 Spock
+Get mode selection question asked if user chooses 'y' to play another round
+Mark user input in 2 player mode
 """
 
 GAME_LIST = ["r", "p", "s", "l", "k"]
@@ -63,6 +60,7 @@ def continue_playing():
         if user_answer == "y":
             return user_answer
         elif user_answer == "n":
+            print("Goodbye!")
             break
         else:
             print("Please enter 'y' or 'n'.")
@@ -106,8 +104,13 @@ def single_player():
             comp_win += 1
             print(f"\nWin: {user_win} \nLose: {comp_win}")
 
-        if not continue_playing():
-            break
+        continue_playing()
+
+        # if not continue_playing():
+        #     print("Goodbye 👋")
+        #     break
+        # else:
+        #     return # return to mode selection
 
 def two_players():
     player1_win = 0
@@ -145,18 +148,25 @@ def two_players():
         player2_win += 1
         print(f"\nWin: {player1_win} \nLose: {player2_win}")
 
-    if not continue_playing():
-        print("Goodbye 👋")
-        break
+    continue_playing()
+    # for i in user_choice():
+    #     if not continue_playing():
+    #         print("Goodbye 👋")
+    #         break
+    #     else:
+    #         return
+
+def play_game():
+    while True:
+        game_mode = input("Do you want to play Vs computer or another player? "
+                        "\nType '1' to play against the computer, or '2' to play with a friend: ")
+        if game_mode in("1", "2"):
+            if game_mode == "1":
+                single_player()
+            elif game_mode == "2":
+                two_players()
+        else:
+            print("Invalid choice, please enter '1' or '2'.")
 
 game_menu()
-while True:
-    game_mode = input("Do you want to play Vs computer or another player? "
-                    "\nType '1' to play against the computer, or '2' to play with a friend: ")
-    if game_mode in("1", "2"):
-        if game_mode == "1":
-            single_player()
-        elif game_mode == "2":
-            two_players()
-    else:
-        print("Invalid choice, please enter '1' or '2'.")
+play_game()
