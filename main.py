@@ -1,4 +1,7 @@
 import random
+import time
+import sys
+
 """
 ideas & ways to improve:
 ! Fix the Would you like to play another round? statement that is showing when the user is trying to run the program for the first time 
@@ -9,83 +12,107 @@ ideas & ways to improve:
 -Get users to input their name and make the output more personalized
 -run continuously until user prompts to exit
 -add input validation
+
+#TODO: 
+👊 rock 
+✋ paper
+✌️ scissors
+🤏 lizard
+🖖 Spock
 """
 
-def get_user_choice():
-    keep_going = True
-    while keep_going:
+GAME_LIST = ["r", "p", "s", "l", "k"]
+SYMBOLS = ["👊", "✋", "✌️", "🤏", "🖖"]
+ITEMS_LIST = ["Rock", "Paper", "Scissors", "Lizard", "Spock"]
+WIN = 0
+
+
+def game_menu():
+    print("-" * 50)
+    print("Welcome to Rock-Paper-Scissors-Lizard-Spock Game!")
+    print("In this game, you can choose from the following options:")
+    for i in range(len(GAME_LIST)):
+        print(f"'{GAME_LIST[i]}' for {ITEMS_LIST[i]} - {SYMBOLS[i]}")
+
+
+def user_choice():
+    while True:
         try:
-            user_choice = input("Please enter your choice: 'r' for rock, 'p' for paper, 's' for scissors, "
-                                "'l' for lizard, or 'sp' spock: ").lower()
-            if user_choice not in ["r", "p", "s", "l", "sp"]:
-                print("Invalid choice. Please enter 'r' for rock, 'p' for paper, 's' for scissors, "
-                      "'l' for lizard, or 'sp' spock. ")
-            else:
-                keep_going = False
-                return user_choice
+            user = input(": ").lower()
+            if user in GAME_LIST:
+                return user
+            print("Please choose a valid option.")
+
         except KeyboardInterrupt:
-            print("Input canceled by the user.")
+            print("Interrupted!")
+            break
 
 
-def choices_explained(choice):
-    if choice == "s":
-        return "for scissors"
-    elif choice == "p":
-        return "for paper"
-    elif choice == "r":
-        return "for rock"
-    elif choice == "l":
-        return "for lizard"
-    else:
-        return "for spock"
+def computer_choice():
+    print("Computer is choosing... ")
+    for _ in range(2):
+        for symbol in SYMBOLS:
+            sys.stdout.write(f"\r {symbol}")
+            sys.stdout.flush()
+            time.sleep(0.1)
+    sys.stdout.write("\r" + " " * len(SYMBOLS))
+    sys.stdout.flush()
+    random_choice = random.choice(GAME_LIST)
+    index_list = GAME_LIST.index(random_choice)
+    print(f"\nComputer choose {ITEMS_LIST[index_list]} - {SYMBOLS[index_list]}")
+    return random_choice
 
 
-def get_computer_choice():
-    return random.choice(["r", "p", "s", "l", "sp"])
+def continue_playing():
+    while True:
+        user_answer = input("Do you want to play again? (y/n)").lower()
+        if user_answer == "y":
+            return True
+        elif user_answer == "n":
+            return False
+        else:
+            print("Please enter 'y' or 'n'.")
 
 
-def winner(user_choice, computer_choice):
-    if user_choice == computer_choice:
-        return "It's a tie!"
+def game():
+    user_win = 0
+    comp_win = 0
+    while True:
+        game_menu()
+        user_result = user_choice()
+        computer_result = computer_choice()
+        index_user = GAME_LIST.index(user_result)
+        index_comp = GAME_LIST.index(computer_result)
+        print("-" * 30)
+        # try to use table
+        #   YOU      |  COMPUTER
+        # Spock 🖖  🆚  🤏 Lizard
+        print(
+            f"\nYou: {ITEMS_LIST[index_user]} - {SYMBOLS[index_user]}  🆚  {SYMBOLS[index_comp]} - {ITEMS_LIST[index_comp]} :Computer")
 
-    outcomes = {
-        ("r", "s"): "Rock crushes scissors!",
-        ("s", "p"): "Scissors cut paper!",
-        ("p", "r"): "Paper covers rock!",
-        ("r", "l"): "Rock crushes lizard!",
-        ("s", "l"): "Scissors decapitate lizard!",
-        ("l", "p"): "Lizard eats paper!",
-        ("l", "sp"): "Lizard poisons spock!",
-        ("p", "sp"): "Paper disproves spock!",
-        ("sp", "s"): "Spock smashes scissors!",
-        ("sp", "r"): "Spock vaporizes rock!"
-    }
+        print("-" * 30)
 
-    user_choice_str = str(user_choice)
-    computer_choice_str = str(computer_choice)
+        if user_result == computer_result:
+            print("It's a tie!")
+            print(f"\nWin: {user_win} \nLose: {comp_win}")
+        elif (
+                (user_result == 'r' and (computer_result == 's' or computer_result == 'l')) or
+                (user_result == 's' and (computer_result == 'p' or computer_result == 'l')) or
+                (user_result == 'p' and (computer_result == 'r' or computer_result == 'k')) or
+                (user_result == 'l' and (computer_result == 'k' or computer_result == 'p')) or
+                (user_result == 'k' and (computer_result == 's' or computer_result == 'r'))
+        ):
+            print("You win!!! ✨")
+            user_win += 1
+            print(f"\nWin: {user_win} \nLose: {comp_win}")
+        else:
+            print("Computer win!!! 😑")
+            comp_win += 1
+            print(f"\nWin: {user_win} \nLose: {comp_win}")
 
-    if (user_choice_str, computer_choice_str) in outcomes:
-        return f"You won! {outcomes[(user_choice_str, computer_choice_str)]}"
-    else:
-        return f"Computer won! {outcomes[(computer_choice_str, user_choice_str)]}"
-
-
-def play_game():
-    user_choice = get_user_choice()
-    computer_choice = get_computer_choice()
-
-    print(f"You chose - {user_choice.upper()} {choices_explained(user_choice)}.")
-    print(f"Computer chose {computer_choice.upper()} {choices_explained(computer_choice)}.")
-
-    result = winner(user_choice, computer_choice)
-    print(result)
+        if not continue_playing():
+            print("Goodbye 👋")
+            break
 
 
-new_game = input("Would you like to play another round? Type 'y' for Yes or 'n' for No.")
-if new_game == "y":
-    play_game()
-else:
-    print("We hope you enjoyed thr game!")
-
-if __name__ == "__main__":
-    play_game()
+game()
