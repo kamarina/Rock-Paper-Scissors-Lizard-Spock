@@ -46,7 +46,6 @@ def computer_choice():
     print(f"\nComputer choose {ITEMS_LIST[index_list]} - {SYMBOLS[index_list]}")
     return random_choice
 
-
 def continue_playing():
     """Ask the user if they want to play again"""
     while True:
