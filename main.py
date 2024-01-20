@@ -2,16 +2,6 @@ import random
 import time
 import sys
 
-"""
-ideas & ways to improve:
--Get users to input their name and make the output more personalized
--add input validation
-
-#TODO: 
-Get mode selection question asked if user chooses 'y' to play another round
-Mark user input in 2 player mode
-"""
-
 GAME_LIST = ["r", "p", "s", "l", "k"]
 SYMBOLS = ["👊", "✋", "✌️", "🤏", "🖖"]
 ITEMS_LIST = ["Rock", "Paper", "Scissors", "Lizard", "Spock"]
@@ -19,6 +9,7 @@ WIN = 0
 
 
 def game_menu():
+    """Display the game menu."""
     print("-" * 50)
     print("Welcome to Rock-Paper-Scissors-Lizard-Spock Game!")
     print("In this game, you can choose from the following options:")
@@ -26,11 +17,11 @@ def game_menu():
         print(f"'{GAME_LIST[i]}' for {ITEMS_LIST[i]} - {SYMBOLS[i]}")
 
 
-def user_choice(prompt):
+def user_choice(player_name):
+    """Get user choice and handle input errors"""
     while True:
         try:
-            user = input(prompt).lower()
-
+            user = input(f"{player_name}, please choose: ").lower()
             if user in GAME_LIST:
                 return user
             print("Please choose a valid option.")
@@ -59,119 +50,74 @@ def continue_playing():
     while True:
         user_answer = input("Do you want to play again? (y/n)").lower()
         if user_answer == "y":
-            return user_answer
+            return True
         elif user_answer == "n":
-            print("Goodbye!")
-            break
+            return False
         else:
             print("Please enter 'y' or 'n'.")
 
 
-def single_player():
-    user_win = 0
-    comp_win = 0
+def game():
     while True:
-        user_result = user_choice("Please enter your choice: ")
-        computer_result = computer_choice()
-        index_user = GAME_LIST.index(user_result)
-        index_comp = GAME_LIST.index(computer_result)
+        print("Welcome to Rock-Paper-Scissors-Lizard-Spock Game!")
+        print("Select mode:")
+        print("1. Play against the computer")
+        print("2. Play against another player")
+        mode = input("Enter your choice (1 or 2): ")
+
+        if mode == "1":
+            player_name = "Player"
+            opponent_name = "Computer"
+        elif mode == "2":
+            player_name = "Player 1"
+            opponent_name = "Player 2"
+        else:
+            print("Invalid choice. Please enter 1 or 2.")
+            continue
+
+        user_win = 0
+        comp_win = 0
         while True:
-            print("-" * 30)
-            # try to use table
-            #   YOU      |  COMPUTER
-            # Spock 🖖  🆚  🤏 Lizard
+            game_menu()
+            user_result = user_choice(player_name)
+            if mode == "2":
+                user_result_2 = user_choice("Player 2")
+            else:
+                user_result_2 = computer_choice()
+
+            index_user = GAME_LIST.index(user_result)
+            index_opponent = GAME_LIST.index(user_result_2)
+
+            print("\033[34m-\033[0m" * 40)
             print(
-                f"\nYou: {ITEMS_LIST[index_user]} - {SYMBOLS[index_user]}  🆚  {SYMBOLS[index_comp]} - "
-                f"{ITEMS_LIST[index_comp]} :Computer")
+                f"\n{player_name}: {ITEMS_LIST[index_user]} - {SYMBOLS[index_user]}  🆚  {SYMBOLS[index_opponent]} - {ITEMS_LIST[index_opponent]} :{opponent_name}")
+            print("\033[34m-\033[0m" * 40)
 
-            print("-" * 30)
-            break
+            print(f"\033[33mRESULT: ", end="")
 
-        if user_result == computer_result:
-            print("It's a tie!")
-            print(f"\nWin: {user_win} \nLose: {comp_win}")
-        elif (
-                (user_result == 'r' and (computer_result == 's' or computer_result == 'l')) or
-                (user_result == 's' and (computer_result == 'p' or computer_result == 'l')) or
-                (user_result == 'p' and (computer_result == 'r' or computer_result == 'k')) or
-                (user_result == 'l' and (computer_result == 'k' or computer_result == 'p')) or
-                (user_result == 'k' and (computer_result == 's' or computer_result == 'r'))
-        ):
-            print("You win!!! ✨")
-            user_win += 1
-            print(f"\nWin: {user_win} \nLose: {comp_win}")
-        else:
-            print("Computer win!!! 😑")
-            comp_win += 1
-            print(f"\nWin: {user_win} \nLose: {comp_win}")
+            if user_result == user_result_2:
+                print("It's a tie!\033[0m")
+                print(f"\n\033[32m{player_name} Win: {user_win} \n{opponent_name} Win: {comp_win}\033[0m")
+                print("\033[34m-\033[0m" * 40)
+            elif (
+                    (user_result == 'r' and (user_result_2 == 's' or user_result_2 == 'l')) or
+                    (user_result == 's' and (user_result_2 == 'p' or user_result_2 == 'l')) or
+                    (user_result == 'p' and (user_result_2 == 'r' or user_result_2 == 'k')) or
+                    (user_result == 'l' and (user_result_2 == 'k' or user_result_2 == 'p')) or
+                    (user_result == 'k' and (user_result_2 == 's' or user_result_2 == 'r'))
+            ):
+                print(f"{player_name} wins!!! ✨\033[0m")
+                user_win += 1
+                print(f"\n\033[32m{player_name} Win: {user_win} \n{opponent_name} Win: {comp_win}\033[0m")
+                print("\033[34m-\033[0m" * 40)
+            else:
+                print(f"{opponent_name} wins!!! 😑\033[0m")
+                comp_win += 1
+                print(f"\n\033[32m{player_name} Win: {user_win} \n{opponent_name} Win: {comp_win}\033[0m")
+                print("\033[34m-\033[0m" * 40)
 
-        continue_playing()
+            if not continue_playing():
+                print("Goodbye 👋")
+                break
 
-        # if not continue_playing():
-        #     print("Goodbye 👋")
-        #     break
-        # else:
-        #     return # return to mode selection
-
-
-def two_players():
-    player1_win = 0
-    player2_win = 0
-    while True:
-
-        player1_result = user_choice("Player 1, enter your choice: ")
-        player2_result = user_choice("Player 2, enter your choice: ")
-        index_player1 = GAME_LIST.index(player1_result)
-        index_player2 = GAME_LIST.index(player2_result)
-
-        print("-" * 30)
-        print(
-            f"\nPlayer 1: {ITEMS_LIST[index_player1]} - {SYMBOLS[index_player1]}  🆚  {SYMBOLS[index_player2]} - "
-            f"{ITEMS_LIST[index_player2]} :Player 2")
-
-        print("-" * 30)
-        break
-
-    if player1_result == player2_result:
-        print("It's a tie!")
-        print(f"\nWin: {player1_win} \nLose: {player2_win}")
-    elif (
-            (player1_result == 'r' and (player2_result == 's' or player2_result == 'l')) or
-            (player1_result == 's' and (player2_result == 'p' or player2_result == 'l')) or
-            (player1_result == 'p' and (player2_result == 'r' or player2_result == 'k')) or
-            (player1_result == 'l' and (player2_result == 'k' or player2_result == 'p')) or
-            (player1_result == 'k' and (player2_result == 's' or player2_result == 'r'))
-    ):
-        print("Player 1 wins!!! ✨")
-        player1_win += 1
-        print(f"\nWin: {player1_win} \nLose: {player2_win}")
-    else:
-        print("Player 2 wins!!! ✨")
-        player2_win += 1
-        print(f"\nWin: {player1_win} \nLose: {player2_win}")
-
-    continue_playing()
-    # for i in user_choice():
-    #     if not continue_playing():
-    #         print("Goodbye 👋")
-    #         break
-    #     else:
-    #         return
-
-
-def play_game():
-    while True:
-        game_mode = input("Do you want to play Vs computer or another player? "
-                          "\nType '1' to play against the computer, or '2' to play with a friend: ")
-
-        if game_mode in ("1", "2"):
-            if game_mode == "1":
-                single_player()
-            elif game_mode == "2":
-                two_players()
-        else:
-            print("Invalid choice, please enter '1' or '2'.")
-
-
-game_menu()
-play_game()
+game()
