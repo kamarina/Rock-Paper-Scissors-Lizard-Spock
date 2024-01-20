@@ -57,6 +57,7 @@ def continue_playing():
 
 def game():
     while True:
+        print("Welcome to Rock-Paper-Scissors-Lizard-Spock Game!")
         print("Select mode:")
         print("1. Play against the computer")
         print("2. Play against another player")
@@ -117,6 +118,5 @@ def game():
             if not continue_playing():
                 print("Goodbye 👋")
                 break
-
 
 game()
