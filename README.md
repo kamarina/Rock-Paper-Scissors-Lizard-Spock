@@ -1,5 +1,5 @@
 # Rock-Paper-Scissors-Lizard-Spock Game
-This is a Python implementation of the Rock-Paper-Scissors-Lizard-Spock game, a variation of the classic Rock-Paper-Scissors game.
+This is a collaborative project that demonstrates Python expertese in implementation of Rock-Paper-Scissors-Lizard-Spock game, featuring unpredictable outcomes with random libraries and a dynamic 2-player mode.
 
 
 Game has 2 modes and the user can decide if they want to play against another player or computer.
